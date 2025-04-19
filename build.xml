@@ -1,56 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="SampleBuild" default="war" basedir=".">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-         classpath="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
 
+    <!-- Define the Checkstyle task -->
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+             classpath="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+
+    <!-- Define classpath for compiling Java -->
     <path id="compile.classpath">
         <fileset dir="WebContent/WEB-INF/lib">
             <include name="*.jar"/>
         </fileset>
     </path>
 
-    <!-- Ensure directories are created -->
+    <!-- Initialize build directories -->
     <target name="init">
         <mkdir dir="build/classes"/>
         <mkdir dir="dist"/>
         <mkdir dir="dest"/>  <!-- Ensure the dest directory is created -->
+        <echo message="Directories created: build/classes, dist, dest"/>
     </target>
 
-    <!-- Compile source files -->
+    <!-- Compile Java source files -->
     <target name="compile" depends="init">
         <javac srcdir="src" debug="true" destdir="build/classes">
             <classpath refid="compile.classpath"/>
         </javac>
+        <echo message="Compilation finished."/>
     </target>
 
-    <!-- Checkstyle task -->
+    <!-- Run Checkstyle -->
     <target name="checkstyle">
-        <checkstyle config="sun_checks.xml" failOnViolation="false"> 
+        <checkstyle config="sun_checks.xml" failOnViolation="false">
             <fileset dir="src/example" includes="**/*.java"/>
             <formatter type="xml" toFile="checkstyle_errors.xml"/>
         </checkstyle>
+        <echo message="Checkstyle finished."/>
     </target>
 
-    <!-- JUnit testing -->
+    <!-- Run JUnit tests -->
     <target name="junit" depends="compile">
         <junit printsummary="yes" haltonfailure="yes">
-              <classpath>
+            <classpath>
                 <pathelement location="build/classes"/>
                 <pathelement path="WebContent/WEB-INF/lib/junit.jar"/>
                 <pathelement path="WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
-              </classpath>
-              <test name="junit.TestCalculator" haltonfailure="no" outfile="TestCalculator_JUnitResult">
+            </classpath>
+            <test name="junit.TestCalculator" haltonfailure="no" outfile="TestCalculator_JUnitResult">
                 <formatter type="xml"/>
-              </test>
+            </test>
         </junit>
+        <echo message="JUnit tests finished."/>
     </target>
 
-    <!-- Build WAR file -->
+    <!-- Build the WAR file -->
     <target name="war" depends="compile">
         <war destfile="dest/SampleWebApp.war" webxml="WebContent/WEB-INF/web.xml">
             <fileset dir="WebContent"/>
             <lib dir="WebContent/WEB-INF/lib"/>
             <classes dir="build/classes"/>
         </war>
+        <echo message="WAR file created: dest/SampleWebApp.war"/>
     </target>
 
 </project>
