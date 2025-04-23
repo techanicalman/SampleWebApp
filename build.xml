@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?ml version="1.0" encoding="UTF-8"?>
 <project name="SampleBuild" default="war" basedir=".">
 
     <!-- Define the Checkstyle task -->
