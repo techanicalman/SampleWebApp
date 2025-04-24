@@ -12,23 +12,11 @@
         </fileset>
     </path>
 
-    <!-- Clean target: Deletes generated files/directories -->
-    <target name="clean">
-        <delete dir="build"/>
-        <delete dir="dist"/>
-        <delete dir="dest"/>
-        <delete file="checkstyle_errors.xml"/>
-        <delete>
-            <fileset dir="." includes="**/*JUnitResult.xml"/>
-        </delete>
-        <echo message="Cleaned up build artifacts."/>
-    </target>
-
     <!-- Initialize build directories -->
     <target name="init">
         <mkdir dir="build/classes"/>
         <mkdir dir="dist"/>
-        <mkdir dir="dest"/>
+        <mkdir dir="dest"/>  <!-- Ensure the dest directory is created -->
         <echo message="Directories created: build/classes, dist, dest"/>
     </target>
 
